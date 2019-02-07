@@ -8,4 +8,4 @@ before_install:
   - docker-compose -f ./Activity\ 2/docker-compose.yml up -d
 
 script:
-  # python script
+  # - pytest <name of file>
