@@ -4,10 +4,8 @@ services:
   - docker
   
 before_install:
-  - docker build -t ioannidisa/apache .
-  - docker run -d -p 127.0.0.1:80:8080 ioannidisa/apache /bin/sh -c "cd /root/apache; bundle exec foreman start;"
-  - docker ps -a
-  - docker run ioannidisa/apache /bin/sh -c "cd /root/sinatra; bundle exec rake test"
+  - docker-compose -f ./Activity\ 2/docker-compose.yml down
+  - docker-compose -f ./Activity\ 2/docker-compose.yml up -d
 
 script:
-  - bundle exec rake test
+  # python script
