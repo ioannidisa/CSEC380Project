@@ -1,1 +1,10 @@
 Activity 2 Questions
+
+What Web Application security mechanisms are involved in your topology? What security mechanisms would ideally be involved?
+
+Ideally, we would like to have a Web Application Firewall, ACLs, and other permissions systems to prevent the datbase being hit directly from external systems. Have people being able to directly query against or even hit the database without going through the application logic could be dangerous -- and a security vulnerability. Currently, we have no such technologies. 
+
+
+What testing framework did you choose and why?
+We chose pytest because some of the members on the team were experienced with it from previous workloads and extends easily to 
+support a wide variety of web frameworks and other dev services such as coverage reports and other things. 
