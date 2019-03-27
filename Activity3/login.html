@@ -1,18 +1,21 @@
-<doctype html!>
 <html>
+
 <head>
-<title>Login </title>
-<link rel="stylesheet" href="style.css" />
+    <title>Login </title>
+    <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
-<form action="/action_page.php" method="get">
-<h4>Login </h4> </br>
-<p5>Username: </p5>
-<input type="text" Username=""> </br> </br>
-<p6>Password: </p6>
-<input type="password" > </br>
-<p> <font color="black"> <a href="#">Login </a>
-</p> </font>
-</form>
+    {% block title %}Login{% endblock %}
+
+    {% block content %}
+      <h2>Login</h2>
+      <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Login</button>
+      </form>
+    {% endblock %}
 </body>
+
 </html>
