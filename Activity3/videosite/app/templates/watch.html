@@ -6,7 +6,7 @@
         <video id="intro" type="video/mp4" controls preload autoplay width="1280" height="720" class="video">
             <source src="{{ video.file.url }}" type="video/mp4">
         </video>
-        <p class="lead"><b>Uploaded By:</b> {{ video.owner.first_name }} {{ video.owner.last_name }} <b>Views:</b> {{ video.views }}</p>
+        <p class="lead"><b>Uploaded By:</b> {{ video.owner.username }} <b>Views:</b> {{ video.views }}</p>
         <p class="lead">{{ video.desc }}</p>
 
         {% if user.id == video.owner_id %}

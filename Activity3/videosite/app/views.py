@@ -1,6 +1,10 @@
 from django.http import HttpResponseRedirect
-from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
+
+from django.contrib.auth import login, authenticate
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm
+
 
 from .models import Video
 from .forms import VideoForm, DeleteForm
@@ -29,12 +33,11 @@ def delete(request):
                     video.delete()
                     return HttpResponseRedirect('/')
                 else:
-                    # TODO: Determine how to handle the wrong user deleting the video.
+                    return HttpResponseRedirect('/watch/' + form.cleaned_data['id'])
                     pass
 
             except Video.DoesNotExist:
-                # TODO: Determine how to handle non-existant id.
-                pass
+                return HttpResponseRedirect('/')
 
 
 @login_required
@@ -66,17 +69,21 @@ def search(request):
         return HttpResponseRedirect('/')
 
     # NOTE: This is where we introduce SQL Injection
-    videos = Video.objects.raw("SELECT * FROM app_video WHERE name LIKE '%" + q + "%'" )
+    videos = Video.objects.raw("SELECT * FROM app_video WHERE name LIKE '%" + q + "%'")
     return render(request, 'search.html', {'videos': videos, 'user': request.user, 'term': q})
 
 
 def register(request):
     if request.method == 'POST':
-        # TODO: Create the user and redirect to login page.
-        pass
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=raw_password)
+            login(request, user)
+            return HttpResponseRedirect('/profile')
     else:
-        if request.user.is_authenticated:
-            return HttpResponseRedirect('/')
-        else:
-            # TODO: Make a nicer register page.
-            return HttpResponseRedirect('/login')
+        form = UserCreationForm()
+
+    return render(request, 'register.html', {'form': form})
