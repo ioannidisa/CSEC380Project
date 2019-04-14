@@ -1,11 +1,13 @@
 language: python
 
+python:
+  - "3.6"
+
 services:
   - docker
-  
-before_install:
-  - docker-compose -f ./Activity2/docker-compose.yml down
-  - docker-compose -f ./Activity2/docker-compose.yml up -d
+
+before_script:
+  - pip install -r requirements.txt
 
 script:
-  - pytest tests/test_webpage.py
+  - python videosite/manage.py test app

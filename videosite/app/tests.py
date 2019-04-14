@@ -38,3 +38,7 @@ class LoginTestCase(TestCase):
         # Make the request and expect to wind up on the profile page.
         response = self.client.post('/login/', post, follow=True)
         self.assertEqual(response.wsgi_request.path, '/login/')
+
+
+class UserUploadDeleteTestCase(TestCase):
+    pass
