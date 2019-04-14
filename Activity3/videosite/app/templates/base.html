@@ -19,6 +19,45 @@
 
 
 <body>
+    <nav class="navbar navbar-expand navbar-dark bg-dark">
+      <a class="navbar-brand" href="#">YourTube</a>
+
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample02" aria-controls="navbarsExample02" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarsExample02">
+        <ul class="navbar-nav mr-auto">
+
+          <li class="nav-item">
+            <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+          </li>
+
+          {% if user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link" href="/profile">{{ user.first_name }}</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="/upload">Upload</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="/logout">Logout</a>
+          </li>
+
+          {% else %}
+          <li class="nav-item">
+            <a class="nav-link" href="/login">Login</a>
+          </li>
+          {% endif %}
+
+        </ul>
+        <form class="form-inline my-2 my-md-0" method="get" action="/search">
+          <input name="q" class="form-control" type="text" placeholder="Search">
+        </form>
+      </div>
+    </nav>
     {% block content %}{% endblock %}
 </body>
 

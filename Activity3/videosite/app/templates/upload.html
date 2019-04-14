@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+    <form action="{% url 'upload' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <p>{{ form.non_field_errors }}</p>
+        <p>{{ form.name.label_tag }} {{ form.name.help_text }}</p>
+         <p>
+            {{ form.name.errors }}
+            {{ form.name }}
+        </p>
+        <p>{{ form.desc.label_tag }} {{ form.desc.help_text }}</p>
+         <p>
+            {{ form.desc.errors }}
+            {{ form.desc }}
+        </p>
+        <p>{{ form.file.label_tag }} {{ form.file.help_text }}</p>
+        <p>
+            {{ form.file.errors }}
+            {{ form.file }}
+        </p>
+        <p><input type="submit" value="Upload" /></p>
+    </form>
+{% endblock content %}
+

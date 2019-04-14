@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="content-section">
+        <h5>Search Results For '{{ term }}'</h5>
+        <div class="top-ten">
+            {% include "videolist.html" %}
+        </div>
+    </div>
+{% endblock content %}

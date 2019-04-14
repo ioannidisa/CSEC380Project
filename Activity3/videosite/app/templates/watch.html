@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <div class="content-section">
+        <h1 class="display-4">{{ video.name }}</h1>
+        <video id="intro" type="video/mp4" controls preload autoplay width="1280" height="720" class="video">
+            <source src="{{ video.file.url }}" type="video/mp4">
+        </video>
+        <p class="lead"><b>Uploaded By:</b> {{ video.owner.first_name }} {{ video.owner.last_name }} <b>Views:</b> {{ video.views }}</p>
+        <p class="lead">{{ video.desc }}</p>
+
+        {% if user.id == video.owner_id %}
+            <form class="form-inline my-2 my-md-0" method="post" action="/delete">
+              {% csrf_token %}
+              <input hidden name="id" type="number" value="{{ video.id }}">
+              <input type="submit" value="Delete" />
+            </form>
+        {% endif %}
+    </div>
+
+
+{% endblock content %}

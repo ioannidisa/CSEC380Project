@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="content-section">
+        <h1>Welcome to YourTube</h1>
+        <h5>Our Top Videos</h5>
+        <div class="top-ten">
+            {% include "videolist.html" %}
+        </div>
+    </div>
+{% endblock content %}
