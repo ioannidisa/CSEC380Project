@@ -1,0 +1,46 @@
+Alexandra Ioannidis
+Zach Probst
+CSEC 380
+Project - Activity 3
+
+·       Provide a link to the test cases you generated for this activity.
+	
+	https://github.com/ioannidisa/CSEC380Project/blob/master/Activity3/videosite/app/tests.py
+
+·       How do you ensure that users that navigate to the protected pages cannot bypass 
+        authentication requirements?
+
+	In order to protect against this, a user will be given a cookie upon login, and unless they are fully 
+	authenticated and receive a cookie, they will not be able to bypass the login page. 
+
+·       How do you protect against session fixation?
+	
+	Session fixation occurs when user sessions are incorrectly handled, which includes issues with cookies. 
+	The only way to protect against session fixation is to make sure your web applications are coded correctly. 
+	The application should assign a different session cookie immediately after a user passes authentication and
+	also verify that the value of the cookie isn’t included in the URL.
+
+·       How do you ensure that if your database gets stolen passwords aren’t exposed? 
+
+	In order to ensure that passwords aren’t exposed if our database is stolen, we cannot have the
+	passwords stored in plain text. So, the best option would be to hash the passwords and use a hashing algorithm 
+	that cannot be broken if you know the hashed password.
+
+·       How do you prevent password brute force?
+
+	Password brute force occurs when an attacker repeatedly tries to guess the password for a user to login.
+	In order to prevent this kind of attack, we can implement an account lockout policy, where the account will lock 
+	for a certain amount of time if there are three failed login attempts. We could also enforce the use and creation
+	of strong passwords or use a CAPTCHA to confirm that the user is a person. 
+
+·       How do you prevent username enumeration?
+
+	To prevent username enumeration, we would return a generic message saying that “No such username or password” if
+	there is a failed login attempt. This would show the attacker that the username they guessed may or may not be 
+	valid. Another preventive measure could be making sure that users’ profiles are visible only to those who have 
+	logged in and making usernames be emails instead of names. 
+
+·       What happens if your sessionID is predictable, how do you prevent that?
+
+	In order to prevent Session ID prediction, the session IDs should not be sequential. Instead, cryptographically 
+	random numbers would work better, that way the session ID would be hard to predict.
