@@ -1,0 +1,28 @@
+version: '3'
+services:
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_DB: 'mytube'
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: 'Ffa8AbQKeBmuSYs4weU'
+  python:
+    container_name: python
+    build: ./docker/python
+    volumes:
+      - ./videosite:/var/www/html
+    working_dir: /var/www/html
+    environment:
+      DJANGO_DEBUG: 'False'
+    depends_on:
+      - postgres
+  web:
+    container_name: web
+    build: ./docker/nginx
+    ports:
+      - 4000:80
+    volumes:
+      - ./videosite:/var/www/html
+    working_dir: /etc/nginx
+    links:
+      - python

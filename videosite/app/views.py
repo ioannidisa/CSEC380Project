@@ -51,6 +51,8 @@ def upload(request):
             )
             video.save()
             return HttpResponseRedirect('/watch/' + str(video.id))
+        else:
+            return render(request, 'upload.html', {'form': form, 'user': request.user})
     else:
         form = VideoForm()
         return render(request, 'upload.html', {'form': form, 'user': request.user})
