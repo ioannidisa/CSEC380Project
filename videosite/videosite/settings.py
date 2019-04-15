@@ -23,7 +23,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '7v05mt)7v7nm66!@uv#o9w5fblr7rdmon$4+osngmu4umds#ce'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-print(os.environ.get('DJANGO_DEBUG', True))
 DEBUG = True if os.environ.get('DJANGO_DEBUG', True) is True else False
 print(DEBUG)
 
