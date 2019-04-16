@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
 
+import urllib.request
 
 class LoginTestCase(TestCase):
     def setUp(self):
@@ -41,4 +42,5 @@ class LoginTestCase(TestCase):
 
 
 class UserUploadDeleteTestCase(TestCase):
-    pass
+    def test_urllib(self):
+        pass

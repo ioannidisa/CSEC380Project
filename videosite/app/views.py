@@ -6,6 +6,9 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 
+import urllib.request
+import urllib.parse
+import os.path
 
 from .models import Video
 from .forms import VideoForm, DeleteForm
@@ -49,11 +52,38 @@ def upload(request):
     if request.method == 'POST':
         form = VideoForm(request.POST, request.FILES)
         if form.is_valid():
-            video = Video(
-                file=request.FILES['file'],
-                name=form.cleaned_data['name'], desc=form.cleaned_data['desc'], views=0, owner=request.user
-            )
-            video.save()
+            if form.cleaned_data.get('url', None) is None:
+                video = Video(
+                    file=request.FILES['file'],
+                    name=form.cleaned_data['name'], desc=form.cleaned_data['desc'], views=0, owner=request.user
+                )
+            else:
+                # Download the file into the correct folder.
+                url = form.cleaned_data['url']
+                r = urllib.request.urlopen(url)
+                data = r.read()
+
+                # We need to write the file into the downloads folder.
+                # To do so, we need to calculate the location of the file based on the name.
+                path = urllib.parse.urlparse(url).path
+                name = os.path.basename(path)
+                new_path = 'media/videos/{}/{}/{}/'.format('2019', '04', '16')
+
+                try:
+                    os.makedirs(new_path)
+                except:
+                    pass
+
+                new_path = '{}/{}'.format(new_path, name)
+
+                with open(new_path, 'wb') as file:
+                    file.write(data)
+                    video = Video(
+                        name=form.cleaned_data['name'], desc=form.cleaned_data['desc'], views=0, owner=request.user
+                    )
+                    video.file.name = 'videos/{}/{}/{}/{}'.format('2019', '04', '16', name)
+                    video.save()
+
             return HttpResponseRedirect('/watch/' + str(video.id))
         else:
             return render(request, 'upload.html', {'form': form, 'user': request.user})

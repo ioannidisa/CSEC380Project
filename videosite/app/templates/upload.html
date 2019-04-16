@@ -18,6 +18,11 @@
             {{ form.file.errors }}
             {{ form.file }}
         </p>
+        <p>OR: {{ form.url.label_tag }} {{ form.url.help_text }}</p>
+        <p>
+            {{ form.url.errors }}
+            {{ form.url }}
+        </p>
         <p><input type="submit" value="Upload" /></p>
     </form>
 {% endblock content %}
