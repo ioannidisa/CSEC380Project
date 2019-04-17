@@ -81,10 +81,11 @@ class VideoUploadTestCase(TestCase):
         # Second log them in.
         self.client.login(username='testuser', password='123456')
 
+        # NOTE: Tons of video sites have these links expire over time so I had to host this on my website.
         response = self.client.post('/upload', {
             'name': 'file test',
             'desc': 'This is a file test',
-            'url': 'https://player.vimeo.com/external/290426949.hd.mp4?s=1e0af236aed4122ecb410ed8fcb3f24b08f1afc8&profile_id=175&oauth2_token_id=57447761&download=1t'
+            'url': 'https://www.resilientvitality.com/bridge.mp4'
         }, follow=True)
 
         vid = Video.objects.all().order_by("-id")[0]
@@ -119,7 +120,7 @@ class SSRFTestCase(LiveServerTestCase):
         self.assertTrue(file.endswith('passwd'))
 
 
-class ClassicSQLInjection(TestCase):
+class SQLInjection(TestCase):
     def test_sql_injection(self):
         # First lets creat a bunch od data
         user = User.objects.create(username='testuser')
