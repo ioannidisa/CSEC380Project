@@ -24,8 +24,6 @@ SECRET_KEY = '7v05mt)7v7nm66!@uv#o9w5fblr7rdmon$4+osngmu4umds#ce'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True if os.environ.get('DJANGO_DEBUG', True) is True else False
-print(DEBUG)
-
 ALLOWED_HOSTS = ['localhost']
 
 
@@ -71,24 +69,17 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'videosite.wsgi.application'
 
-if DEBUG:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'mytube',
+        'USER': 'postgres',
+        'PASSWORD': 'Ffa8AbQKeBmuSYs4weU',
+        'HOST': 'postgres',
+        'PORT': '5432',
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'mytube',
-            'USER': 'postgres',
-            'PASSWORD': 'Ffa8AbQKeBmuSYs4weU',
-            'HOST': 'postgres',
-            'PORT': '5432',
-        }
-    }
+}
 
 
 AUTH_PASSWORD_VALIDATORS = [

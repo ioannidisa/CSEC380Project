@@ -52,11 +52,12 @@ def upload(request):
     if request.method == 'POST':
         form = VideoForm(request.POST, request.FILES)
         if form.is_valid():
-            if form.cleaned_data.get('url', None) is None:
+            if form.cleaned_data.get('url', None) == '':
                 video = Video(
                     file=request.FILES['file'],
                     name=form.cleaned_data['name'], desc=form.cleaned_data['desc'], views=0, owner=request.user
                 )
+                video.save()
             else:
                 # Download the file into the correct folder.
                 url = form.cleaned_data['url']
@@ -67,7 +68,7 @@ def upload(request):
                 # To do so, we need to calculate the location of the file based on the name.
                 path = urllib.parse.urlparse(url).path
                 name = os.path.basename(path)
-                new_path = 'media/videos/{}/{}/{}/'.format('2019', '04', '16')
+                new_path = os.path.join(settings.MEDIA_ROOT, 'videos/{}/{}/{}/'.format('2019', '04', '16'))
 
                 try:
                     os.makedirs(new_path)
@@ -112,7 +113,11 @@ def search(request):
         "app_video"."views", "app_video"."owner_id", "app_video"."file" FROM "app_video"
          WHERE "app_video"."name" LIKE \'%%{}%%\' ORDER BY "app_video"."views" DESC'''.format(q))
 
-    return render(request, 'search.html', {'videos': videos, 'user': request.user, 'term': q})
+    print(videos.raw_query)
+    try:
+        return render(request, 'search.html', {'videos': videos, 'user': request.user, 'term': q})
+    except:
+        return render(request, 'search.html', {'videos': [], 'user': request.user, 'term': q})
 
 
 def register(request):

